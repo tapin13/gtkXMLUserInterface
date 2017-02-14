@@ -1,10 +1,4 @@
 #include <gtk/gtk.h>
-#include <gtk-3.0/gtk/gtktypes.h>
-#include <glib-2.0/glib/gmessages.h>
-#include <glib-2.0/gobject/gobject.h>
-#include <gtk-3.0/gtk/gtkmain.h>
-#include <gtk-3.0/gtk/gtkbuilder.h>
-#include <stddef.h>
 
 static void printHello(GtkWidget *widget, gpointer data) {
     g_print("Hello!\n");
@@ -20,6 +14,19 @@ int main(int argc, char** argv) {
     builder = gtk_builder_new();
     gtk_builder_add_from_file(builder, "builder.ui", NULL);
     
+    window = gtk_builder_get_object(builder, "window");
+    g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    
+    button = gtk_builder_get_object(builder, "button1");
+    g_signal_connect(button, "clicked", G_CALLBACK(printHello), NULL);
+    
+    button = gtk_builder_get_object(builder, "button2");
+    g_signal_connect(button, "clicked", G_CALLBACK(printHello), NULL);
+    
+    button = gtk_builder_get_object(builder, "quit");
+    g_signal_connect(button, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    
+    gtk_main();
     
     return 0;
 }
